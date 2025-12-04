@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import PlayerCard from '@/components/PlayerCard';
 import SimplePlayerCard from '@/components/SimplePlayerCard';
 
@@ -117,9 +118,43 @@ export default function PlayersPage() {
     );
   }
 
+  // Player background images
+  const playerImages = [
+    '/players-Alfredo_Triff_2.jpg',
+    '/players-Andy.jpg',
+    '/players-ASTORHAN.jpg',
+    '/players-bang1.jpg',
+    '/players-Charles.jpg',
+    '/players-DD.jpg',
+    '/players-dmurray.jpg',
+    '/players-FER-KIP7-3.jpg',
+    '/players-Jack-2.jpg',
+    '/players-Milton.jpg',
+    '/players-Negro-2.jpg',
+    '/players-pullen-2-25-95.jpg',
+  ];
+
   return (
-    <main className="min-h-screen bg-black text-[#bc7d30] relative">
-      <div className="container mx-auto px-4 py-16 pb-32">
+    <main className="min-h-screen bg-black text-[#bc7d30] relative overflow-hidden">
+      {/* Background Images - Grid of all images spread across the page */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-4 gap-4 md:gap-6 p-4 md:p-8">
+          {playerImages.map((img, idx) => (
+            <div key={idx} className="relative aspect-square opacity-20">
+              <Image
+                src={img}
+                alt=""
+                fill
+                className="object-cover sepia"
+                sizes="(max-width: 768px) 25vw, (max-width: 1024px) 16vw, 25vw"
+                unoptimized
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-16 pb-32 relative z-10">
         <h1 className="text-4xl md:text-6xl font-bold mb-8">Players</h1>
         
         {/* Core Players Grid */}
