@@ -2,11 +2,13 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import PlayerCard from '@/components/PlayerCard';
+import SimplePlayerCard from '@/components/SimplePlayerCard';
 
 interface Player {
   name: string;
   role?: string;
   albums?: string[];
+  picture?: string | null;
 }
 
 // Core players in priority order (these will be displayed first)
@@ -46,6 +48,7 @@ export default function PlayersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [players, setPlayers] = useState<Player[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Fetch players from API
   useEffect(() => {
@@ -67,8 +70,8 @@ export default function PlayersPage() {
     fetchPlayers();
   }, []);
 
-  // Filter and sort players
-  const sortedPlayers = useMemo(() => {
+  // Separate and filter players
+  const { corePlayers, otherPlayers } = useMemo(() => {
     // First filter players based on search query
     const filtered = players.filter(player => {
       const name = player.name.toLowerCase();
@@ -77,31 +80,30 @@ export default function PlayersPage() {
     });
 
     // Separate core players and other players
-    const corePlayers: Player[] = [];
-    const otherPlayers: Player[] = [];
+    const core: Player[] = [];
+    const other: Player[] = [];
 
     filtered.forEach(player => {
       if (isCorePlayer(player)) {
-        corePlayers.push(player);
+        core.push(player);
       } else {
-        otherPlayers.push(player);
+        other.push(player);
       }
     });
 
     // Sort core players by their priority order
-    corePlayers.sort((a, b) => {
+    core.sort((a, b) => {
       const indexA = getCorePlayerIndex(a);
       const indexB = getCorePlayerIndex(b);
       return indexA - indexB;
     });
 
     // Sort other players alphabetically by name
-    otherPlayers.sort((a, b) => {
+    other.sort((a, b) => {
       return a.name.localeCompare(b.name);
     });
 
-    // Combine: core players first, then other players
-    return [...corePlayers, ...otherPlayers];
+    return { corePlayers: core, otherPlayers: other };
   }, [searchQuery, players]);
 
   if (isLoading) {
@@ -116,42 +118,88 @@ export default function PlayersPage() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-[#bc7d30]">
-      <div className="container mx-auto px-4 py-16">
+    <main className="min-h-screen bg-black text-[#bc7d30] relative">
+      <div className="container mx-auto px-4 py-16 pb-32">
         <h1 className="text-4xl md:text-6xl font-bold mb-8">Players</h1>
-        <span>to do: <ul><li>add photos for players</li>
-<li>add player details and find available picture for each player</li>          
-
-
-          </ul>
-        </span>
-        {/* Search Bar */}
-        <div className="mb-12">
-          <input
-            type="text"
-            placeholder="Search by name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-96 px-4 py-3 bg-black border border-[#bc7d30]/30 rounded-lg text-[#bc7d30] placeholder-[#bc7d30]/50 focus:outline-none focus:border-[#bc7d30]/60 transition-colors"
-          />
-        </div>
-
-        {/* Player Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedPlayers.map((player, index) => (
+        
+        {/* Core Players Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {corePlayers.map((player, index) => (
             <PlayerCard
               key={`${player.name}-${index}`}
               name={player.name}
               role={player.role}
               albums={player.albums}
+              picture={player.picture}
             />
           ))}
         </div>
 
-        {sortedPlayers.length === 0 && (
-          <p className="text-center text-[#bc7d30]/60 mt-12">
-            {searchQuery ? `No players found matching "${searchQuery}"` : 'No players found'}
-          </p>
+        {/* Button to open drawer */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40">
+          <button
+            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+            className="bg-black border border-[#bc7d30]/30 text-[#bc7d30] font-bold py-3 px-8 rounded-full hover:border-[#bc7d30]/60 transition-colors"
+          >
+            Also Featuring
+          </button>
+        </div>
+
+        {/* Bottom Drawer */}
+        <div
+          className={`fixed bottom-0 left-0 right-0 bg-black border-t border-[#bc7d30]/30 z-50 transition-transform duration-300 ease-in-out ${
+            isDrawerOpen ? 'translate-y-0' : 'translate-y-full'
+          }`}
+          style={{ maxHeight: '80vh' }}
+        >
+          {/* Drawer Header with Close Button */}
+          <div className="flex items-center justify-between px-4 py-4 border-b border-[#bc7d30]/30">
+            <h2 className="text-2xl font-bold text-[#bc7d30]">All Players</h2>
+            <button
+              onClick={() => setIsDrawerOpen(false)}
+              className="px-4 py-2 bg-[#bc7d30] text-black font-bold rounded hover:bg-[#bc7d30]/80 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+          
+          <div className="container mx-auto px-4 py-6 max-h-[calc(80vh-80px)] overflow-y-auto">
+            {/* Search Bar in Drawer */}
+            <div className="mb-6">
+              <input
+                type="text"
+                placeholder="Search by name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-3 bg-black border border-[#bc7d30]/30 rounded-lg text-[#bc7d30] placeholder-[#bc7d30]/50 focus:outline-none focus:border-[#bc7d30]/60 transition-colors"
+              />
+            </div>
+
+            {/* Other Players Grid */}
+            {otherPlayers.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {otherPlayers.map((player, index) => (
+                  <SimplePlayerCard
+                    key={`${player.name}-${index}`}
+                    name={player.name}
+                    role={player.role}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-[#bc7d30]/60 mt-12">
+                {searchQuery ? `No players found matching "${searchQuery}"` : 'No players found'}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Backdrop overlay when drawer is open */}
+        {isDrawerOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-30"
+            onClick={() => setIsDrawerOpen(false)}
+          />
         )}
       </div>
     </main>
