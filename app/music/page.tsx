@@ -11,6 +11,7 @@ interface Album {
   artist?: string;
   by?: string; // Artist field from DB
   catno?: string; // Catalog number for R2 image URLs
+  dates?: string; // Recording and release dates
 }
 
 export default function MusicPage() {
@@ -111,6 +112,7 @@ export default function MusicPage() {
               year={album.year}
               artist={album.artist || album.by}
               catno={album.catno}
+              dates={album.dates}
             />
           ))}
         </div>

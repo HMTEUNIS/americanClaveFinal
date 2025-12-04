@@ -24,6 +24,7 @@ interface Album {
   artist?: string;
   by?: string;
   catno?: string; // Catalog number for R2 image URLs
+  dates?: string; // Recording and release dates
   tracklist?: Track[];
   track_list?: any; // BLOB from DB, will be parsed
   buyLink?: string;
@@ -162,6 +163,12 @@ export default async function AlbumDetailPage({ params }: AlbumDetailPageProps) 
             </h1>
             {(album.artist || album.by) && (
               <p className="text-2xl text-[#bc7d30]/80 mb-2">{album.artist || album.by}</p>
+            )}
+            {album.catno && (
+              <p className="text-lg text-[#bc7d30]/70 mb-2 font-mono">{album.catno}</p>
+            )}
+            {album.dates && (
+              <p className="text-lg text-[#bc7d30]/60 mb-2 italic">{album.dates}</p>
             )}
             {album.year && (
               <p className="text-lg text-[#bc7d30]/60">{album.year}</p>

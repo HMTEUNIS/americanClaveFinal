@@ -40,6 +40,7 @@ export interface Album {
   path?: string;
   by?: string; // Artist/Producer
   catno?: string; // Catalog number - used for R2 image URLs
+  dates?: string; // Recording and release dates (e.g., "recorded 1982-1994 - released 1995")
   tracklist?: Array<{ number: number; title: string; duration?: string }>;
   buyLink?: string;
   price?: number;

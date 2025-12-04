@@ -10,9 +10,10 @@ interface AlbumCardProps {
   year?: number;
   artist?: string;
   catno?: string; // Catalog number for R2 image URLs
+  dates?: string; // Recording and release dates
 }
 
-export default function AlbumCard({ id, title, year, artist, catno }: AlbumCardProps) {
+export default function AlbumCard({ id, title, year, artist, catno, dates }: AlbumCardProps) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -58,6 +59,12 @@ export default function AlbumCard({ id, title, year, artist, catno }: AlbumCardP
         </h3>
         {artist && (
           <p className="text-[#bc7d30]/80 mb-1">{artist}</p>
+        )}
+        {catno && (
+          <p className="text-sm text-[#bc7d30]/70 mb-1 font-mono">{catno}</p>
+        )}
+        {dates && (
+          <p className="text-sm text-[#bc7d30]/60 mb-1 italic">{dates}</p>
         )}
         {year && (
           <p className="text-sm text-[#bc7d30]/60">{year}</p>
