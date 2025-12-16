@@ -1,7 +1,16 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
+  const pathname = usePathname();
+  
+  // Hide navigation on the landing page
+  if (pathname === '/') {
+    return null;
+  }
   const navItems = [
     { label: 'Kip', href: '/kip' },
     { label: 'Music', href: '/music' },
