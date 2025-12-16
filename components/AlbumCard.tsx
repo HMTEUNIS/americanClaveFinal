@@ -36,7 +36,7 @@ export default function AlbumCard({ id, title, year, artist, catno, dates }: Alb
           alt={`${title} cover`}
           fill
           className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
           unoptimized
           onError={(e) => {
             // If the placeholder also fails, hide the image

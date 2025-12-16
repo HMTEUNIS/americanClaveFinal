@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import AlbumCard from '@/components/AlbumCard';
+import { assignAlbumsToGroups, albumGroups } from '@/lib/album-groups';
 
 interface Album {
   id: number;
@@ -40,13 +41,20 @@ export default function MusicPage() {
     fetchAlbums();
   }, []);
 
-  // Filter albums based on search query (title or artist)
-  const filteredAlbums = albums.filter(album => {
-    const artist = album.artist || album.by || '';
-    const searchableText = `${album.title} ${artist}`.toLowerCase();
-    const query = searchQuery.toLowerCase();
-    return searchableText.includes(query);
-  });
+  // Group albums and filter based on search query
+  const groupedAlbums = useMemo(() => {
+    // First filter albums based on search query
+    const filtered = albums.filter(album => {
+      if (!searchQuery) return true;
+      const artist = album.artist || album.by || '';
+      const searchableText = `${album.title} ${artist}`.toLowerCase();
+      const query = searchQuery.toLowerCase();
+      return searchableText.includes(query);
+    });
+
+    // Then group the filtered albums
+    return assignAlbumsToGroups(filtered);
+  }, [albums, searchQuery]);
 
   if (isLoading) {
     return (
@@ -102,22 +110,41 @@ export default function MusicPage() {
           />
         </div>
 
-        {/* Album Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAlbums.map((album) => (
-            <AlbumCard
-              key={album.id}
-              id={album.id}
-              title={album.title}
-              year={album.year}
-              artist={album.artist || album.by}
-              catno={album.catno}
-              dates={album.dates}
-            />
-          ))}
-        </div>
+        {/* Grouped Album Sections */}
+        {Array.from(groupedAlbums.entries()).map(([groupId, groupAlbums]) => {
+          if (groupAlbums.length === 0) return null;
+          
+          const group = albumGroups.find(g => g.id === groupId);
+          const isUngrouped = groupId === 0;
 
-        {filteredAlbums.length === 0 && (
+          return (
+            <div key={groupId} className="mb-16 last:mb-0">
+              {/* Group Separator - only show for actual groups, not ungrouped */}
+              {!isUngrouped && (
+                <div className="mb-8 pb-4 border-b border-[#bc7d30]/20">
+                  <div className="h-px bg-gradient-to-r from-transparent via-[#bc7d30]/40 to-transparent mb-4"></div>
+                </div>
+              )}
+              
+              {/* Album Cards Grid - larger covers */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                {groupAlbums.map((album) => (
+                  <AlbumCard
+                    key={album.id}
+                    id={album.id}
+                    title={album.title}
+                    year={album.year}
+                    artist={album.artist || album.by}
+                    catno={album.catno}
+                    dates={album.dates}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        {Array.from(groupedAlbums.values()).flat().length === 0 && (
           <p className="text-center text-[#bc7d30]/60 mt-12">
             {searchQuery ? `No albums found matching "${searchQuery}"` : 'No albums found'}
           </p>
