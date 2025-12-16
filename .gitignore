@@ -42,3 +42,7 @@ next-env.d.ts
 
 # large files
 public/homepage.gif
+
+# bio import utility (causes deployment issues)
+app/bio-import/
+lib/html-utils.ts
