@@ -11,7 +11,7 @@ Your D1 worker should implement the following endpoints:
 Returns all players from the Players table.
 
 **Expected Response:**
-```json
+```json 
 [
   {
     "id": 1,

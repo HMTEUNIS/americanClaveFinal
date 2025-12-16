@@ -26,6 +26,30 @@ interface PlayerProfilePageProps {
   params: Promise<{ playername: string }>;
 }
 
+// Core players list - only these players have full detail pages
+const corePlayerOrder: string[] = [
+  'Alfredo Triff',
+  'Andy Gonzalez',
+  'Astor Piazzolla',
+  'Charles Neville',
+  'Don Pullen',
+  'Fernando Saunders',
+  'Horacio "El Negro" Hernandez',
+  'Ishmael Reed',
+  'Jack Bruce',
+  'Milton Cardona',
+  '"Puntilla" Orlando Rios',
+  'Robby Ameen',
+  'Silvana DeLuigi',
+];
+
+// Helper function to check if a player is a core player
+function isCorePlayer(playerName: string): boolean {
+  return corePlayerOrder.some(
+    core => core.toLowerCase() === playerName.toLowerCase()
+  );
+}
+
 export default async function PlayerProfilePage({ params }: PlayerProfilePageProps) {
   const { playername } = await params;
   
@@ -35,6 +59,11 @@ export default async function PlayerProfilePage({ params }: PlayerProfilePagePro
     fullPlayerData = await fetchPlayerBySlug(playername);
     
     if (!fullPlayerData) {
+      notFound();
+    }
+    
+    // Only allow access to core/primary players
+    if (!isCorePlayer(fullPlayerData.name)) {
       notFound();
     }
   } catch (error) {
@@ -86,10 +115,6 @@ export default async function PlayerProfilePage({ params }: PlayerProfilePagePro
   return (
     <main className="min-h-screen bg-black text-[#bc7d30]">
       <div className="container mx-auto px-4 py-16">
-        <span>to do: <ul><li>add bio for players</li> 
-        <li>debug album associations</li>
-        </ul>
-        </span>
         <div className="max-w-4xl mx-auto">
           {/* Player Header */}
           <div className="mb-12">

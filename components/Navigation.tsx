@@ -20,7 +20,7 @@ export default function Navigation() {
         {/* Logo - slightly left of center */}
         <div className="mb-4 flex justify-start">
           <div className="ml-0 md:ml-8">
-            <Link href="/" className="inline-block">
+            <Link href="/home" className="inline-block">
               <Image
                 src="/discogsclave.jpg"
                 alt="American Clavé"
@@ -34,7 +34,7 @@ export default function Navigation() {
         </div>
 
         {/* Horizontal line */}
-        <div className="w-full h-px bg-white mb-4"></div>
+        <div className="w-full h-px bg-[#C0C0C0] mb-4"></div>
 
         {/* Navigation links - aligned to the right */}
         <div className="flex justify-end">
@@ -43,7 +43,7 @@ export default function Navigation() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-white hover:text-white/80 transition-colors text-lg md:text-xl font-medium"
+                  className="text-[#C0C0C0] hover:text-[#C0C0C0]/80 transition-colors text-lg md:text-xl font-medium"
                   style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
                 >
                   {item.label}

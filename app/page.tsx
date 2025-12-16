@@ -1,34 +1,66 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Image from 'next/image';
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleNavigation = () => {
+    router.push('/home');
+  };
+
+  // Handle Enter key press
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleNavigation();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-black text-[#bc7d30]">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-center">
-          {/* Image on the left */}
-          <div className="flex justify-center md:justify-start">
+    <main 
+      className="relative min-h-screen w-full overflow-hidden cursor-pointer"
+      onClick={handleNavigation}
+      role="button"
+      tabIndex={0}
+      aria-label="Click or press Enter to continue to music page"
+    >
+      {/* Full-screen GIF background */}
+      <div className="fixed inset-0 w-full h-full z-0">
+        <Image
+          src="/homepage.gif"
+          alt="American Clavé"
+          fill
+          className="object-cover"
+          priority
+          unoptimized
+        />
+      </div>
+
+      {/* American Clavé logo - bottom left with silver underline */}
+      <div className="fixed bottom-5 left-0 right-0 z-10">
+        {/* Black box - matches image height, spans from image left to same distance from right */}
+        <div className="absolute bottom-0 left-4 md:left-6 right-4 md:right-6 bg-black flex items-end">
+          {/* Image positioned at left */}
+          <div className="relative w-96 md:w-[512px] h-auto">
             <Image
-              src="/kiporange.jpg"
-              alt="Kip Hanrahan"
-              width={1000}
-              height={1000}
-              className="w-full max-w-2xl h-auto rounded-lg"
+              src="/american-clave-lg-white.jpg"
+              alt="American Clavé"
+              width={512}
+              height={512}
+              className="w-full h-auto"
               priority
+              unoptimized
             />
           </div>
-
-          {/* Text on the right */}
-          <div className="text-lg md:text-xl leading-relaxed">
-            <p className="mb-15">
-              American Clavé is a label (a label? a record company? a form? a box?) of music colored by my friend Kip Hanrahan, whether produced or directed or written by or with some rather remarkable fellow artists (artists made somehow yet more remarkable by the mere presence of Kip's unique take on things), the music is deep, intelligent and always passionate ... deeply passionate.
-            </p>
-            <p className="mb-15">
-              Perhaps in the same way that Kip's conversation tends toward a stream of consciousness, a stream of images, a myriad of rhythms, voices and sound somehow unite in some truly profound and meaningful way.
-            </p>
-            <p>
-              Nothing is hidden, yet there is so much to be discovered.
-            </p>
-          </div>
+          {/* Silver underline - below the box */}
+          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C0C0C0]" style={{ transform: 'translateY(100%)' }}></div>
         </div>
       </div>
     </main>
