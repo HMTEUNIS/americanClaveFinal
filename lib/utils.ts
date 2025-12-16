@@ -37,3 +37,37 @@ export function generateAlbumSlug(title: string): string {
     .trim();
 }
 
+/**
+ * Maps a player name to their image file path in /playerpics/
+ * Converts names like "Alfredo Triff" to "alfredo_triff.png"
+ * Handles special cases like "Charles Neville" -> "charlie_neville.png"
+ */
+export function getPlayerImagePath(name: string): string | null {
+  // Special name mappings
+  const nameMappings: Record<string, string> = {
+    'charles neville': 'charlie_neville',
+    '"puntilla" orlando rios': 'orlando_rios',
+    'orlando rios': 'orlando_rios',
+    'horacio "el negro" hernandez': 'horacio_el_negro_hernandez',
+  };
+
+  // Normalize: lowercase, trim, and remove all types of quotes
+  const normalizedName = name
+    .toLowerCase()
+    .replace(/["'"]/g, '') // Remove all types of quotes
+    .trim();
+  
+  // Check for special mappings first
+  if (nameMappings[normalizedName]) {
+    return `/playerpics/${nameMappings[normalizedName]}.png`;
+  }
+
+  // Convert name to file format: remove special chars, replace spaces with underscores
+  const fileBase = normalizedName
+    .replace(/[^\w\s]/g, '') // Remove special characters except spaces
+    .replace(/\s+/g, '_') // Replace spaces with underscores
+    .trim();
+
+  return `/playerpics/${fileBase}.png`;
+}
+

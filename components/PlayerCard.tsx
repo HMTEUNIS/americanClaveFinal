@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { generatePlayerSlug } from '@/lib/utils';
+import { generatePlayerSlug, getPlayerImagePath } from '@/lib/utils';
 
 interface PlayerCardProps {
   name: string;
@@ -19,8 +19,9 @@ export default function PlayerCard({ name, role, albums, picture }: PlayerCardPr
     router.push(`/players/${slug}`);
   };
 
-  // Use placeholder if no picture provided
-  const imageUrl = picture || '/profileplaceholder.jpg';
+  // Try to get player image from /playerpics/, fallback to provided picture, then placeholder
+  const playerImagePath = getPlayerImagePath(name);
+  const imageUrl = playerImagePath || picture || '/profileplaceholder.jpg';
 
   return (
     <div 

@@ -33,13 +33,11 @@ export default function Home() {
     >
       {/* Full-screen GIF background */}
       <div className="fixed inset-0 w-full h-full z-0">
-        <Image
-          src="/homepage.gif"
+        <img
+          src="https://www.dropbox.com/scl/fi/9l3yc3bdb5eev5xhh83bg/homepage.gif?rlkey=r8efkcbdt4796w1k34d7az405&st=4y8lvd64&dl=1"
           alt="American Clavé"
-          fill
-          className="object-cover"
-          priority
-          unoptimized
+          className="w-full h-full object-cover"
+          style={{ position: 'absolute', inset: 0 }}
         />
       </div>
 

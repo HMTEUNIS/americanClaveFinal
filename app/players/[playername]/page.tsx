@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { generatePlayerSlug } from '@/lib/utils';
+import { generatePlayerSlug, getPlayerImagePath } from '@/lib/utils';
 import Image from 'next/image';
 import { fetchPlayerBySlug } from '@/lib/d1-worker';
 
@@ -85,8 +85,9 @@ export default async function PlayerProfilePage({ params }: PlayerProfilePagePro
     }
   }
   
-  // Get the first picture for the bio section, or use placeholder
-  const profilePicture = images && images.length > 0 ? images[0] : '/profileplaceholder.jpg';
+  // Get player image from /playerpics/, fallback to database images, then placeholder
+  const playerImagePath = getPlayerImagePath(fullPlayerData.name);
+  const profilePicture = playerImagePath || (images && images.length > 0 ? images[0] : null) || '/profileplaceholder.jpg';
   
   // Get birthdate and deathdate
   const birthdate = fullPlayerData.birthdate || null;
