@@ -92,7 +92,7 @@ export default function PurchasePage() {
       <main className="min-h-screen bg-black text-[#bc7d30]">
         <div className="container mx-auto px-4 py-16">
           <h1 className="text-4xl md:text-6xl font-bold mb-8">Purchase Albums</h1>
-          <p className="text-center text-[#bc7d30]/60">Loading albums...</p>
+          <p className="text-left text-[#bc7d30]/60">Loading albums...</p>
         </div>
       </main>
     );

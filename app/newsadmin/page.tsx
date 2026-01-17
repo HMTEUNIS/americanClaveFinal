@@ -166,7 +166,7 @@ export default function NewsAdminPage() {
   if (!session) {
     return (
       <main className="min-h-screen bg-black text-[#bc7d30] flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-left">
           <h1 className="text-4xl font-bold mb-8">News Admin</h1>
           <button
             onClick={() => signIn('google')}

@@ -98,7 +98,7 @@ export default function PlayerAlbumsModal({ isOpen, onClose, playerName }: Playe
           {/* Content */}
           <div className="flex-1 overflow-y-auto px-6 py-6">
             {isLoading ? (
-              <p className="text-center text-[#bc7d30]/60">Loading albums...</p>
+              <p className="text-left text-[#bc7d30]/60">Loading albums...</p>
             ) : albums.length > 0 ? (
               <div>
                 <h3 className="text-xl font-bold text-[#bc7d30] mb-4">Albums</h3>
@@ -130,7 +130,7 @@ export default function PlayerAlbumsModal({ isOpen, onClose, playerName }: Playe
                 </ul>
               </div>
             ) : (
-              <p className="text-center text-[#bc7d30]/60">No albums found.</p>
+              <p className="text-left text-[#bc7d30]/60">No albums found.</p>
             )}
           </div>
         </div>

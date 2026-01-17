@@ -17,6 +17,25 @@ body {
   color: #bc7d30;
   font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+/* Ensure all text elements are uppercase and left-aligned */
+h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, label, button, a, input, textarea, select {
+  text-transform: uppercase;
+  text-align: left;
+}
+
+/* Override any center-aligned text */
+.text-center {
+  text-align: left !important;
+}
+
+/* Ensure input placeholders are uppercase */
+input::placeholder,
+textarea::placeholder {
+  text-transform: uppercase;
 }
 
 /* TipTap Editor Styles */

@@ -50,7 +50,7 @@ function PurchaseSuccessContent() {
   if (isLoading) {
     return (
       <main className="min-h-screen bg-black text-[#bc7d30] flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-left">
           <p className="text-xl">Verifying your purchase...</p>
         </div>
       </main>
@@ -61,7 +61,7 @@ function PurchaseSuccessContent() {
     return (
       <main className="min-h-screen bg-black text-[#bc7d30]">
         <div className="container mx-auto px-4 py-16 max-w-2xl">
-          <div className="text-center">
+          <div className="text-left">
             <h1 className="text-4xl font-bold mb-4">Purchase Verification Failed</h1>
             <p className="text-lg mb-8 text-[#bc7d30]/80">{error}</p>
             <Link
@@ -83,7 +83,7 @@ function PurchaseSuccessContent() {
   return (
     <main className="min-h-screen bg-black text-[#bc7d30]">
       <div className="container mx-auto px-4 py-16 max-w-2xl">
-        <div className="text-center">
+        <div className="text-left">
           <h1 className="text-5xl font-bold mb-4">Purchase Successful!</h1>
           <p className="text-2xl mb-8 text-[#bc7d30]/80">
             Thank you for your purchase of <strong>{purchaseData.albumTitle}</strong>
@@ -130,7 +130,7 @@ export default function PurchaseSuccessPage() {
   return (
     <Suspense fallback={
       <main className="min-h-screen bg-black text-[#bc7d30] flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-left">
           <p className="text-xl">Loading...</p>
         </div>
       </main>

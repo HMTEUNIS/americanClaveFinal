@@ -112,7 +112,7 @@ export default function PlayersPage() {
       <main className="min-h-screen bg-black text-[#bc7d30]">
         <div className="container mx-auto px-4 py-16">
           <h1 className="text-4xl md:text-6xl font-bold mb-8">Players</h1>
-          <p className="text-center text-[#bc7d30]/60">Loading players...</p>
+          <p className="text-left text-[#bc7d30]/60">Loading players...</p>
         </div>
       </main>
     );
@@ -222,7 +222,7 @@ export default function PlayersPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-center text-[#bc7d30]/60 mt-12">
+              <p className="text-left text-[#bc7d30]/60 mt-12">
                 {searchQuery ? `No players found matching "${searchQuery}"` : 'No players found'}
               </p>
             )}

@@ -73,7 +73,7 @@ export default function MusicPage() {
         </div>
         <div className="container mx-auto px-4 py-16 relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-8">Music</h1>
-          <p className="text-center text-[#bc7d30]/60">Loading albums...</p>
+          <p className="text-left text-[#bc7d30]/60">Loading albums...</p>
         </div>
       </main>
     );
@@ -145,7 +145,7 @@ export default function MusicPage() {
         })}
 
         {Array.from(groupedAlbums.values()).flat().length === 0 && (
-          <p className="text-center text-[#bc7d30]/60 mt-12">
+          <p className="text-left text-[#bc7d30]/60 mt-12">
             {searchQuery ? `No albums found matching "${searchQuery}"` : 'No albums found'}
           </p>
         )}
@@ -156,7 +156,7 @@ export default function MusicPage() {
         <p className="text-[#bc7d30] text-sm md:text-base leading-relaxed mb-4 italic">
           "Kip Hanrahan's worldly and highly artistic approach provides a road map for ongoing success. Most importantly, Hanrahan paints vivid portraits of life, love and reality without becoming self-absorbed or overbearing. Overall, his productions are generally accessible and entertaining while maintaining that perpetual touch of class."
         </p>
-        <div className="text-right">
+        <div className="text-left">
           <p className="text-[#bc7d30] font-semibold text-sm md:text-base">Glenn Astarita</p>
           <p className="text-[#bc7d30]/70 text-xs md:text-sm">AllAboutJazz.com</p>
         </div>

@@ -157,7 +157,7 @@ export default async function AlbumDetailPage({ params }: AlbumDetailPageProps) 
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           {/* Album Header */}
-          <div className="mb-12 text-center">
+          <div className="mb-12 text-left">
             <h1 className="text-5xl md:text-7xl font-bold mb-4">
               {album.title}
             </h1>
