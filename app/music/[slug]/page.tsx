@@ -110,13 +110,17 @@ export default async function AlbumDetailPage({ params }: AlbumDetailPageProps) 
         notFound();
       }
       
-      console.log('Found album:', matchedAlbum.title, 'ID:', matchedAlbum.id);
+      // Ensure matched album has an ID
       if (!matchedAlbum.id) {
         console.error('Matched album has no ID');
         notFound();
       }
-      albumId = matchedAlbum.id;
-      fullAlbum = await fetchAlbumById(albumId);
+      
+      console.log('Found album:', matchedAlbum.title, 'ID:', matchedAlbum.id);
+      // TypeScript now knows matchedAlbum.id is not null/undefined
+      const foundAlbumId: number = matchedAlbum.id;
+      albumId = foundAlbumId;
+      fullAlbum = await fetchAlbumById(foundAlbumId);
     }
     
     if (!fullAlbum || !albumId) {
