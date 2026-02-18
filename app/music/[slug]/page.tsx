@@ -111,6 +111,10 @@ export default async function AlbumDetailPage({ params }: AlbumDetailPageProps) 
       }
       
       console.log('Found album:', matchedAlbum.title, 'ID:', matchedAlbum.id);
+      if (!matchedAlbum.id) {
+        console.error('Matched album has no ID');
+        notFound();
+      }
       albumId = matchedAlbum.id;
       fullAlbum = await fetchAlbumById(albumId);
     }
