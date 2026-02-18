@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { generatePlayerSlug } from '@/lib/utils';
+import { generatePlayerSlug, generateAlbumSlug } from '@/lib/utils';
 
 interface AlbumEntry {
   album_id: number;
@@ -103,16 +103,18 @@ export default function PlayerAlbumsModal({ isOpen, onClose, playerName }: Playe
               <div>
                 <h3 className="text-xl font-bold text-[#bc7d30] mb-4">Albums</h3>
                 <ul className="space-y-3">
-                  {albums.map((album: AlbumEntry, index: number) => (
-                    <li
-                      key={`${album.album_id}-${index}`}
-                      className="border border-[#bc7d30]/30 rounded-lg p-4 hover:border-[#bc7d30]/60 transition-colors"
-                    >
-                      <Link
-                        href={`/music/${album.album_id}`}
-                        className="block"
-                        onClick={onClose}
+                  {albums.map((album: AlbumEntry, index: number) => {
+                    const albumSlug = generateAlbumSlug(album.title);
+                    return (
+                      <li
+                        key={`${album.album_id}-${index}`}
+                        className="border border-[#bc7d30]/30 rounded-lg p-4 hover:border-[#bc7d30]/60 transition-colors"
                       >
+                        <Link
+                          href={`/music/${albumSlug}`}
+                          className="block"
+                          onClick={onClose}
+                        >
                         <h4 className="text-lg font-bold text-[#bc7d30] mb-2 hover:text-[#bc7d30]/80 transition-colors">
                           {album.title}
                         </h4>
@@ -126,7 +128,8 @@ export default function PlayerAlbumsModal({ isOpen, onClose, playerName }: Playe
                         </div>
                       </Link>
                     </li>
-                  ))}
+                  );
+                  })}
                 </ul>
               </div>
             ) : (

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchAlbumById } from '@/lib/d1-worker';
+import { fetchAlbumById, fetchAlbumBySlug } from '@/lib/d1-worker';
 import { getAllAlbumCoverUrls } from '@/lib/r2-images';
 
 interface AlbumDetailRouteProps {
@@ -7,23 +7,28 @@ interface AlbumDetailRouteProps {
 }
 
 /**
- * API Route to fetch a single album by ID from Cloudflare D1
+ * API Route to fetch a single album by ID or slug from Cloudflare D1
  * 
  * This endpoint calls the D1 worker and returns album data with R2 image URLs.
+ * Supports both numeric IDs and slug-based lookups.
  */
 
 export async function GET(request: Request, { params }: AlbumDetailRouteProps) {
   try {
     const { id } = await params;
+    const decodedId = decodeURIComponent(id);
     
-    // Parse ID and validate
-    const albumId = parseInt(id, 10);
-    if (isNaN(albumId)) {
-      return NextResponse.json({ error: 'Invalid album ID' }, { status: 400 });
+    // Check if it's a numeric ID
+    const albumId = parseInt(decodedId, 10);
+    let albumData: any = null;
+    
+    if (!isNaN(albumId)) {
+      // Fetch by ID
+      albumData = await fetchAlbumById(albumId);
+    } else {
+      // Fetch by slug
+      albumData = await fetchAlbumBySlug(decodedId);
     }
-    
-    // Fetch album data from D1 worker
-    const albumData = await fetchAlbumById(albumId);
     
     if (!albumData) {
       return NextResponse.json({ error: 'Album not found' }, { status: 404 });

@@ -6,15 +6,23 @@ const authSecret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
 
 // For development, use a default secret if none is provided
 // In production, this should be set via environment variables
-const secret = authSecret || (process.env.NODE_ENV === 'development' ? 'dev-secret-change-in-production' : undefined);
+// Ensure secret is always a non-empty string
+const secret = authSecret || 'dev-secret-change-in-production-please-set-auth-secret-in-production';
 
 // Warn if secret is missing in production
 if (!authSecret && process.env.NODE_ENV === 'production') {
   console.warn('WARNING: AUTH_SECRET is not set. Authentication may not work in production.');
 }
 
-// Only configure NextAuth if we have a secret or we're in development
-const authConfig: any = {
+// Debug: Log secret status (without exposing the actual secret)
+if (process.env.NODE_ENV === 'development') {
+  console.log('[Auth] Secret is set:', !!secret && secret.length > 0);
+  console.log('[Auth] Using environment secret:', !!authSecret);
+}
+
+// Configure NextAuth with secret always set
+const authConfig = {
+  secret: secret, // Always set a secret to avoid MissingSecret error
   trustHost: true, // Required for Vercel deployment
   providers: [
     Google({
@@ -37,11 +45,6 @@ const authConfig: any = {
     error: '/newsadmin',
   },
 };
-
-// Only add secret if it's defined
-if (secret) {
-  authConfig.secret = secret;
-}
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
 

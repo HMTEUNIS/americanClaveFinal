@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { getFrontCoverUrl } from '@/lib/r2-images';
+import { generateAlbumSlug } from '@/lib/utils';
 
 interface AlbumCardProps {
   id: number;
@@ -17,7 +18,8 @@ export default function AlbumCard({ id, title, year, artist, catno, dates }: Alb
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/music/${id}`);
+    const slug = generateAlbumSlug(title);
+    router.push(`/music/${slug}`);
   };
 
   const frontCoverUrl = catno ? getFrontCoverUrl(catno) : null;
